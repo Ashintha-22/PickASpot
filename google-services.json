@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1017882151115",
+    "project_id": "pick-a-spot-mobile",
+    "storage_bucket": "pick-a-spot-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1017882151115:android:e70d8eda499844e76fb34e",
+        "android_client_info": {
+          "package_name": "com.dev_ashintha.PickASpot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1017882151115-sb15k3n4gu0f3rkqidc4do9ktnp1944g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev_ashintha.PickASpot",
+            "certificate_hash": "91beba56d66dae3c11fdd1c7d879803f65ff584a"
+          }
+        },
+        {
+          "client_id": "1017882151115-t2mt6d71lv6enthlm4p382jq2trq1gn6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev_ashintha.PickASpot",
+            "certificate_hash": "3e80887097348e48069a4820e9b2ddc64e94e9a7"
+          }
+        },
+        {
+          "client_id": "1017882151115-5d0mcp21oto5gshkau3u6o9cm9dia14o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB__QK7yulwZxyIxeuRI-Zgqi-QP51L-78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1017882151115-5d0mcp21oto5gshkau3u6o9cm9dia14o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
