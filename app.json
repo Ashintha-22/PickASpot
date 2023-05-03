@@ -2,7 +2,9 @@
   "expo": {
     "name": "PickASpot",
     "slug": "PickASpot",
-    "plugins": ["@react-native-google-signin/google-signin"],
+    "plugins": [
+      "@react-native-google-signin/google-signin"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/PickASpot.png",
@@ -12,9 +14,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "pickASpot"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
