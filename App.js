@@ -1,11 +1,11 @@
 import "expo-dev-client";
-import auth from "@react-native-firebase/auth";
-import React, { useState, useEffect } from "react";
-import Login from "./src/Login";
+import { createStackNavigator, Stack } from "react-navigation-stack";
+import "react-native-gesture-handler";
+import Navigator from "./src/Navigator";
 
 //export default function App() {
 const App = () => {
-  return <Login />;
+  return (navigationOptions = { headerShown: false }), (<Navigator />);
 };
 
 export default App;

@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-end",
+    //justifyContent: "flex-end",
   },
   text: {
     fontSize: 20,
@@ -20,17 +20,10 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     width: width,
     height: height,
-    bottom: 265,
-    zIndex: 0,
+    top: -265,
+    //bottom: 265,
   },
-  rectangle: {
-    width: width,
-    height: height,
-    backgroundColor: "blue",
-    position: "absolute",
-    bottom: 0,
-  },
-  formContianer: {
+  formContainer: {
     flex: 1,
     justifyContent: "center",
     width: width,
@@ -38,7 +31,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     alignItems: "center",
-    justifyContent: "center",
     position: "absolute",
     top: 250,
     backgroundColor: "#F6F8FF",
@@ -111,6 +103,21 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     alignSelf: "center",
     justifyContent: "center",
+  },
+  LoginRegisterButton: {
+    height: 60,
+    width: width - 60,
+    borderRadius: 30,
+    backgroundColor: "#5c8aff",
+    flexDirection: "row",
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 3.05,
+    elevation: 2,
   },
 });
 

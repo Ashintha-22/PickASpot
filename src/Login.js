@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import {
   Button,
   Text,
@@ -8,7 +7,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { Svg, Rect } from "react-native-svg";
 import "expo-dev-client";
 import {
   GoogleSignin,
@@ -22,6 +20,8 @@ const Login = () => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   GoogleSignin.configure({
     webClientId:
@@ -72,23 +72,29 @@ const Login = () => {
 
   if (!user) {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} position="relative">
+        <Text>Hii</Text>
         <Image
           source={require("../assets/login_BG.jpg")}
           style={styles.image}
           position="absolute"
         />
-        <View style={styles.formContianer}>
+        <View position="absolute" style={styles.formContainer}>
           <Text style={styles.pageTitle}>Welcome Back!</Text>
           <TextInput
             placeholder="Email"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
             placeholderTextColor="#676767"
             style={styles.textInput}
           />
           <TextInput
             placeholder="Password"
+            valur={password}
+            onChangeText={(text) => setPassword(text)}
             placeholderTextColor="#676767"
             style={styles.textInput}
+            secureTextEntry={true}
           />
           <Text style={styles.forgotPassword}>Forgot Password?</Text>
           <View style={styles.signincontainer}>
