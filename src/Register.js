@@ -10,7 +10,7 @@ const Register = () => {
         style={styles.image}
         position="absolute"
       />
-      <View style={styles.formContianer}>
+      <View style={styles.formContainer}>
         <Text style={styles.pageTitle}>Let's get Registered!</Text>
         <TextInput
           placeholder="Email"
