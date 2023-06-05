@@ -1,10 +1,14 @@
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import React from "react";
+import { user } from "./Login";
 
-const Welcome = () => {
+const Welcome = ({ navigation }) => {
   return (
-    <View>
-      <Text>Welcome</Text>
+    <View style={styles.container}>
+      <View style={{ marginTop: 100, alignItems: "center" }}>
+        <Text style={styles.text}> Welcome, {user.displayName}</Text>
+      </View>
+      <Button style={{ marginTop: 300 }} title="Sign Out" onPress={signOut} />
     </View>
   );
 };

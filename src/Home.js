@@ -54,6 +54,7 @@ const Home = ({ navigation }) => {
         <TouchableOpacity
           style={[styles.LoginRegisterButton, { marginTop: 25 }]}
           activeOpacity={0.5}
+          onPress={() => navigation.navigate("Register")}
         >
           <Text
             style={[styles.buttonText, { color: "white", marginLeft: 118 }]}

@@ -2,26 +2,59 @@ import {
   Button,
   Text,
   View,
-  Dimensions,
   Image,
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import "expo-dev-client";
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-} from "@react-native-google-signin/google-signin";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
 import React, { useState, useEffect } from "react";
 import styles from "./styles";
 
-const Login = () => {
+const Login = ({ navigation }) => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errortext, setErrortext] = useState("");
+
+  const handleLogin = () => {
+    setErrortext("");
+    if (!email) {
+      alert("Please fill Email");
+      return;
+    }
+    if (!password) {
+      alert("Please fill Password");
+      return;
+    }
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log("Logged in with: ", user.email);
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.code === "auth/invalid-email") setErrortext(error.message);
+        else if (error.code === "auth/user-not-found")
+          setErrortext("No User Found");
+        else {
+          setErrortext("Please check your email id or password");
+          alert(error.message);
+        }
+      });
+  };
+
+  useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged((user) => {
+      if (user) {
+        navigation.navigate("Home");
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   GoogleSignin.configure({
     webClientId:
@@ -109,7 +142,11 @@ const Login = () => {
             >
               Sign in
             </Text>
-            <TouchableOpacity style={styles.signinbutton} activeOpacity={0.5}>
+            <TouchableOpacity
+              style={styles.signinbutton}
+              activeOpacity={0.5}
+              onPress={handleLogin}
+            >
               <Image
                 source={require("../assets/arrowButton.png")}
                 style={{
@@ -138,10 +175,6 @@ const Login = () => {
               />
               <Text style={styles.buttonText}>Continue with Google</Text>
             </TouchableOpacity>
-            {/* <GoogleSigninButton
-          style={{ width: 300, height: 65, marginTop: 10}}
-          onPress={onGoogleButtonPress}
-        /> */}
           </View>
         </View>
       </View>

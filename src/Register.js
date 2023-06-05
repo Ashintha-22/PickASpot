@@ -1,8 +1,31 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
 import styles from "./styles";
+import auth from "@react-native-firebase/auth";
 
-const Register = () => {
+const Register = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleRegister = () => {
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log(user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
+
+  useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged((user) => {
+      if (user) {
+        navigation.navigate("Welcome");
+      }
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <View style={styles.container}>
       <Image
@@ -14,19 +37,18 @@ const Register = () => {
         <Text style={styles.pageTitle}>Let's get Registered!</Text>
         <TextInput
           placeholder="Email"
-          value="E-mail"
+          value={email}
           onChangeText={(text) => setEmail(text)}
           placeholderTextColor="#676767"
           style={styles.textInput}
         />
         <TextInput
           placeholder="Password"
-          value="Password"
+          value={password}
           onChangeText={(text) => setPassword(text)}
           placeholderTextColor="#676767"
           style={styles.textInput}
         />
-        <Text style={styles.forgotPassword}>Forgot Password?</Text>
         <View style={styles.signincontainer}>
           <Text
             style={{
@@ -37,7 +59,7 @@ const Register = () => {
               marginBottom: 20,
             }}
           >
-            Sign in
+            Sign Up
           </Text>
           <TouchableOpacity style={styles.signinbutton} activeOpacity={0.5}>
             <Image
@@ -47,6 +69,7 @@ const Register = () => {
                 width: 120,
                 height: 120,
               }}
+              onPress={handleRegister}
             />
           </TouchableOpacity>
         </View>
@@ -54,7 +77,7 @@ const Register = () => {
           <TouchableOpacity
             style={styles.googleSignInButton}
             activeOpacity={0.5}
-            onPress={onGoogleButtonPress}
+            //onPress={onGoogleButtonPress}
           >
             <Image
               source={require("../assets/google.png")}
@@ -68,10 +91,6 @@ const Register = () => {
             />
             <Text style={styles.buttonText}>Continue with Google</Text>
           </TouchableOpacity>
-          {/* <GoogleSigninButton
-          style={{ width: 300, height: 65, marginTop: 10}}
-          onPress={onGoogleButtonPress}
-        /> */}
         </View>
       </View>
     </View>
