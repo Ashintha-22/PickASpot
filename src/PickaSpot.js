@@ -39,23 +39,6 @@ const PickaSpot = ({ route, navigation }) => {
         { backgroundColor: "#F6F8FF", alignItems: "center" },
       ]}
     >
-      <TouchableOpacity
-        style={[styles.LoginRegisterButton, { marginTop: 30 }]}
-        activeOpacity={0.5}
-        onPress={() => navigation.navigate("PickaSpot")}
-      >
-        <Text style={[styles.buttonText, { color: "white", marginLeft: 105 }]}>
-          PICK A SPOT
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.LoginRegisterButton, { marginTop: 30 }]}
-        activeOpacity={0.5}
-      >
-        <Text style={[styles.buttonText, { color: "white", marginLeft: 85 }]}>
-          PROVIDE A SPOT
-        </Text>
-      </TouchableOpacity>
       <View style={{ marginTop: 10, justifyContent: "center" }}>
         <Text style={styles.text}> Welcome, {user}</Text>
         <Text style={styles.text}> {userEmail}</Text>
