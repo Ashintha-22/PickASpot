@@ -1,4 +1,11 @@
-import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import styles from "./styles";
 import auth from "@react-native-firebase/auth";
@@ -28,10 +35,10 @@ const Register = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image
+      <ImageBackground
         source={require("../assets/login_BG.jpg")}
+        resizeMode="contain"
         style={styles.image}
-        position="absolute"
       />
       <View style={styles.formContainer}>
         <Text style={styles.pageTitle}>Let's get Registered!</Text>

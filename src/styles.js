@@ -7,8 +7,7 @@ console.log(height, width);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    //justifyContent: "flex-end",
+    alignItems: "flex-start",
   },
   text: {
     fontSize: 20,
@@ -17,7 +16,6 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   image: {
-    resizeMode: "contain",
     width: width,
     height: height,
     top: -265,
@@ -118,6 +116,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.17,
     shadowRadius: 3.05,
     elevation: 2,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    alignSelf: "flex-end",
+    marginRight: 32,
   },
 });
 

@@ -4,10 +4,12 @@ import {
   View,
   Image,
   TextInput,
+  ImageBackground,
   TouchableOpacity,
 } from "react-native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import styles from "./styles";
 
@@ -37,8 +39,9 @@ const Login = ({ navigation }) => {
       })
       .catch((error) => {
         console.log(error);
-        if (error.code === "auth/invalid-email") setErrortext(error.message);
-        else if (error.code === "auth/user-not-found")
+        if (error.code === "auth/invalid-email") {
+          setErrortext(error.message);
+        } else if (error.code === "auth/user-not-found")
           setErrortext("No User Found");
         else {
           setErrortext("Please check your email id or password");
@@ -49,8 +52,19 @@ const Login = ({ navigation }) => {
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((user) => {
-      if (user) {
-        navigation.navigate("Home");
+      if (user.email) {
+        navigation.replace(
+          "MainStack",
+          {
+            user: user.displayName,
+            userEmail: user.email,
+          },
+          {
+            screenName: "Home",
+            params: { user: user.displayName, userEmail: user.email },
+          }
+        );
+        console.log("Logged in with: ", user.email);
       }
     });
     return unsubscribe;
@@ -58,7 +72,7 @@ const Login = ({ navigation }) => {
 
   GoogleSignin.configure({
     webClientId:
-      "646634016430-96colfmkjkiaumrodp76467f8ei0f1vf.apps.googleusercontent.com",
+      "1017882151115-u2ki65sbjmr6db53cej5mvcad9mh4qro.apps.googleusercontent.com",
   });
 
   // Handle user state changes
@@ -92,25 +106,15 @@ const Login = ({ navigation }) => {
       });
   };
 
-  const signOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await auth().signOut();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   if (initializing) return null;
 
   if (!user) {
     return (
       <View style={styles.container} position="relative">
-        <Text>Hii</Text>
-        <Image
+        <ImageBackground
           source={require("../assets/login_BG.jpg")}
           style={styles.image}
-          position="absolute"
+          resizeMode="contain"
         />
         <View position="absolute" style={styles.formContainer}>
           <Text style={styles.pageTitle}>Welcome Back!</Text>
@@ -121,6 +125,9 @@ const Login = ({ navigation }) => {
             placeholderTextColor="#676767"
             style={styles.textInput}
           />
+          {errortext !== "" && (
+            <Text style={styles.errorText}>{errortext}</Text>
+          )}
           <TextInput
             placeholder="Password"
             valur={password}
@@ -139,6 +146,7 @@ const Login = ({ navigation }) => {
                 color: "#5c8aff",
                 marginBottom: 20,
               }}
+              onPress={() => navigation.navigate("Welcome")}
             >
               Sign in
             </Text>
@@ -181,14 +189,14 @@ const Login = ({ navigation }) => {
     );
   }
 
-  return (
-    <View style={styles.container}>
-      <View style={{ marginTop: 100, alignItems: "center" }}>
-        <Text style={styles.text}> Welcome, {user.displayName}</Text>
-      </View>
-      <Button style={{ marginTop: 300 }} title="Sign Out" onPress={signOut} />
-    </View>
-  );
+  // return (
+  //   <View style={styles.container}>
+  //     <View style={{ marginTop: 100, alignItems: "center" }}>
+  //       <Text style={styles.text}> Welcome, {user.displayName}</Text>
+  //     </View>
+  //     <Button style={{ marginTop: 300 }} title="Sign Out" onPress={signOut} />
+  //   </View>
+  // );
 };
 
 export default Login;

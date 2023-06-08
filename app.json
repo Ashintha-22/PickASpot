@@ -8,7 +8,7 @@
     "icon": "./assets/SquareLogo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/PickASpot.png",
+      "image": "./assets/SquareLogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
