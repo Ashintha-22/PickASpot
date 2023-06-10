@@ -19,16 +19,17 @@ const Home = ({ route, navigation }) => {
   const { user, userEmail } = route.params || {}; // Add a null check here;
 
   const signOut = async () => {
-    auth()
-      .signOut()
-      .then(() => console.log("User signed out!"));
-    try {
-      await GoogleSignin.revokeAccess();
-      await auth().signOut();
-      navigation.navigate("MainStack");
-    } catch (error) {
-      console.error(error);
-    }
+    navigation.navigate("GetDetails");
+    // auth()
+    //   .signOut()
+    //   .then(() => console.log("User signed out!"));
+    // try {
+    //   await GoogleSignin.revokeAccess();
+    //   await auth().signOut();
+    //   navigation.navigate("MainStack");
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   useEffect(() => {
@@ -39,8 +40,6 @@ const Home = ({ route, navigation }) => {
       });
     }
   }, []);
-
-  console.log(user, userEmail);
 
   return (
     <View
@@ -81,11 +80,7 @@ const Home = ({ route, navigation }) => {
           activeOpacity={0.5}
           onPress={() => navigation.navigate("Login")}
         >
-          <Text
-            style={[styles.buttonText, { color: "white", marginLeft: 135 }]}
-          >
-            LOGIN
-          </Text>
+          <Text style={[styles.buttonText, { color: "white" }]}>LOGIN</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -93,13 +88,9 @@ const Home = ({ route, navigation }) => {
           activeOpacity={0.5}
           onPress={() => navigation.navigate("Register")}
         >
-          <Text
-            style={[styles.buttonText, { color: "white", marginLeft: 118 }]}
-          >
-            REGISTER
-          </Text>
+          <Text style={[styles.buttonText, { color: "white" }]}>REGISTER</Text>
         </TouchableOpacity>
-        <Button style={{ marginTop: 0 }} title="Sign Out" onPress={signOut} />
+        {/* <Button style={{ marginTop: 0 }} title="Sign Out" onPress={signOut} /> */}
       </View>
     </View>
   );

@@ -9,11 +9,10 @@ import {
 } from "react-native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
-import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import styles from "./styles";
 
-const Login = ({ navigation }) => {
+const Login = ({ route, navigation }) => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
@@ -31,28 +30,41 @@ const Login = ({ navigation }) => {
       alert("Please fill Password");
       return;
     }
+
     auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        console.log("Logged in with: ", user.email);
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.code === "auth/invalid-email") {
-          setErrortext(error.message);
-        } else if (error.code === "auth/user-not-found")
-          setErrortext("No User Found");
-        else {
-          setErrortext("Please check your email id or password");
-          alert(error.message);
+      .fetchSignInMethodsForEmail(email)
+      .then((signInMethods) => {
+        if (signInMethods.length === 0) {
+          alert("If new user. Please Register");
+          navigation.navigate("Register", {
+            userEmail: email,
+            userPassword: password,
+          });
+        } else {
+          auth()
+            .signInWithEmailAndPassword(email, password)
+            .then((userCredentials) => {
+              const user = userCredentials.user;
+              console.log("Logged in with: ", user.email);
+            })
+            .catch((error) => {
+              console.log(error);
+              if (error.code === "auth/invalid-email") {
+                setErrortext("Invalid email address");
+              } else if (error.code === "auth/user-not-found")
+                setErrortext("No User Found");
+              else {
+                setErrortext("Please check your email or password");
+                alert("Incorrect Password");
+              }
+            });
         }
       });
   };
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((user) => {
-      if (user.email) {
+      if (user && user.email) {
         navigation.replace(
           "MainStack",
           {
@@ -96,13 +108,33 @@ const Login = ({ navigation }) => {
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     // Sign-in the user with the credential
-    const user_sign_in = auth().signInWithCredential(googleCredential);
-    user_sign_in
-      .then((user) => {
-        console.log(user);
-      })
-      .catch((error) => {
-        console.log(error);
+    //const user_sign_in = auth().signInWithCredential(googleCredential);
+
+    auth()
+      .signInWithCredential(googleCredential)
+      .then(({ user }) => {
+        auth()
+          .fetchSignInMethodsForEmail(user.email)
+          .then((signInMethods) => {
+            if (signInMethods.length === 0) {
+              alert("If new user. Please Register");
+              navigation.navigate("Register", {
+                userEmail: user.email,
+              });
+            } else {
+              console.log(user.email);
+              user
+                .then((user) => {
+                  console.log(user);
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   };
 
@@ -181,7 +213,9 @@ const Login = ({ navigation }) => {
                   marginLeft: 35,
                 }}
               />
-              <Text style={styles.buttonText}>Continue with Google</Text>
+              <Text style={[styles.buttonText, { marginLeft: 20 }]}>
+                Continue with Google
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

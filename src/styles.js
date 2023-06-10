@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Raleway",
     alignSelf: "center",
-    marginLeft: 20,
   },
   signincontainer: {
     marginTop: 10,
@@ -108,6 +107,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: "#5c8aff",
     flexDirection: "row",
+    alignSelf: "center",
+    justifyContent: "center",
     shadowColor: "#000000",
     shadowOffset: {
       width: 0,

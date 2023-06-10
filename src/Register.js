@@ -9,25 +9,72 @@ import {
 import React, { useState, useEffect } from "react";
 import styles from "./styles";
 import auth from "@react-native-firebase/auth";
+import "react-native-gesture-handler";
 
-const Register = ({ navigation }) => {
+const Register = ({ route, navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errortext, setErrortext] = useState("");
+
+  const { userEmail, userPassword } = route.params || {}; // Add a null check here;
 
   const handleRegister = () => {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        console.log(user.email);
-      })
-      .catch((error) => alert(error.message));
+    setErrortext("");
+    if (!email) {
+      alert("Please fill Email");
+      return;
+    }
+    if (!password) {
+      alert("Please fill Password");
+      return;
+    }
+
+    auth()
+      //.createUserWithEmailAndPassword(email, password)
+      .fetchSignInMethodsForEmail(email)
+      .then((signInMethods) => {
+        if (signInMethods.length !== 0) {
+          alert("That email address is already in use!");
+          setErrortext("That email address is already in use!");
+        } else {
+          auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then((userCredentials) => {
+              const user = userCredentials.user;
+              console.log(user.email);
+            })
+            .catch((error) => {
+              if (error.code === "auth/email-already-in-use") {
+                setErrortext("That email address is already in use!");
+                alert("That email address is already in use!");
+              } else if (error.code === "auth/invalid-email") {
+                setErrortext("Invalid email address");
+                alert("Invalid email address");
+              } else {
+                setErrortext("Please check your email or password");
+                alert(error.message);
+              }
+            });
+        }
+      });
+  };
+
+  const gotoDetails = () => {
+    if (errortext === "") {
+      navigation.navigate("GetDetails", {
+        userEmail: userEmail,
+        userPassword: userPassword,
+      });
+    }
   };
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((user) => {
       if (user) {
-        navigation.navigate("Welcome");
+        navigation.navigate("GetDetails", {
+          userEmail: userEmail,
+          userPassword: userPassword,
+        });
       }
     });
     return unsubscribe;
@@ -68,7 +115,11 @@ const Register = ({ navigation }) => {
           >
             Sign Up
           </Text>
-          <TouchableOpacity style={styles.signinbutton} activeOpacity={0.5}>
+          <TouchableOpacity
+            style={styles.signinbutton}
+            activeOpacity={0.5}
+            onPress={handleRegister}
+          >
             <Image
               source={require("../assets/arrowButton.png")}
               style={{
@@ -76,7 +127,6 @@ const Register = ({ navigation }) => {
                 width: 120,
                 height: 120,
               }}
-              onPress={handleRegister}
             />
           </TouchableOpacity>
         </View>
@@ -96,7 +146,9 @@ const Register = ({ navigation }) => {
                 marginLeft: 35,
               }}
             />
-            <Text style={styles.buttonText}>Continue with Google</Text>
+            <Text style={[styles.buttonText, { marginLeft: 20 }]}>
+              Continue with Google
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

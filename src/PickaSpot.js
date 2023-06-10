@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import styles from "./styles";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
-import { useRoute } from "@react-navigation/native";
 import "react-native-gesture-handler";
 
 const PickaSpot = ({ route, navigation }) => {
@@ -28,7 +27,7 @@ const PickaSpot = ({ route, navigation }) => {
       await auth().signOut();
       navigation.navigate("MainStack");
     } catch (error) {
-      console.error(error);
+      //console.log(error);
     }
   };
 

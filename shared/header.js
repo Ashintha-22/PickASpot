@@ -2,9 +2,26 @@ import React from "react";
 import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import "react-native-gesture-handler";
-import PickaSpot, { signOut } from "../src/PickaSpot";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import auth from "@react-native-firebase/auth";
 
 const { height, width } = Dimensions.get("window");
+
+const signOut = async () => {
+  auth()
+    .signOut()
+    .then(() => {
+      console.log("User signed out!");
+    });
+
+  try {
+    await GoogleSignin.revokeAccess();
+    await auth().signOut();
+    navigation.navigate("MainStack");
+  } catch (error) {
+    //console.log(error);
+  }
+};
 
 const Header = () => {
   return (
@@ -20,9 +37,7 @@ const Header = () => {
           size={30}
           style={{ alignSelf: "center", marginLeft: 150 }}
           color="white"
-          onPress={() => {
-            signOut;
-          }}
+          onPress={signOut}
         />
       </View>
     </View>
