@@ -8,14 +8,17 @@ import Login from "../src/Login";
 import Register from "../src/Register";
 import MainStack from "../src/MainStack";
 import Header from "../shared/header";
+import GetDetails from "../src/GetDetails";
 
 const LoginStack = ({ navigation }) => {
   const Stack = createNativeStackNavigator();
 
   <NavigationContainer>
     <Stack.Navigator>
+      <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="GetDetails" component={GetDetails} />
       <Stack.Screen
         name="MainStack"
         component={MainStack}
