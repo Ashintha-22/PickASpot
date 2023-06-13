@@ -2,7 +2,6 @@ import { StyleSheet, Dimensions } from "react-native";
 
 //set window properties
 const { height, width } = Dimensions.get("window");
-console.log(height, width);
 
 const styles = StyleSheet.create({
   container: {
@@ -109,7 +108,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     backgroundColor: "#5c8aff",
-    flexDirection: "row",
     shadowColor: "#000000",
     shadowOffset: {
       width: 0,

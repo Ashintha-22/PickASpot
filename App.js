@@ -9,21 +9,23 @@ import Register from "./src/Register";
 import MainStack from "./src/MainStack";
 import Header from "./shared/header";
 import GetDetails from "./src/GetDetails";
+import SpotForm from "./src/SpotForm";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { db, colRef } from "./shared/firebase";
 
-initializeApp({ projectId: "pick-a-spot-mobile" });
-//init  services
-const db = getFirestore();
+// initializeApp({ projectId: "pick-a-spot-mobile" });
+// //init  services
+// const db = getFirestore();
 
-//collection references
-const colRef = collection(db, "users");
+// //collection references
+// const colRef = collection(db, "users");
 
 //get collection data
 getDocs(colRef).then((snapshot) => {
   console.log(snapshot.docs);
 });
-//export default function App() {
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -46,6 +48,7 @@ const App = () => {
             headerTitle: () => <Header />,
           }}
         />
+        <Stack.Screen name="SpotForm" component={SpotForm} />
       </Stack.Navigator>
     </NavigationContainer>
   );

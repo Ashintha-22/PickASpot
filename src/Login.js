@@ -10,7 +10,7 @@ import {
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
 import React, { useState, useEffect } from "react";
-import styles from "./styles";
+import styles from "../shared/styles";
 
 const Login = ({ route, navigation }) => {
   // Set an initializing state whilst Firebase connects

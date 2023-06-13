@@ -4,9 +4,13 @@ import auth from "@react-native-firebase/auth";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import PickaSpot from "./PickaSpot";
+import ProvideStack from "../stacks/ProvideStack";
+import PickStack from "../stacks/PickStack";
 import ProvideaSpot from "./ProvideaSpot";
+import SpotForm from "./SpotForm";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,9 +40,9 @@ const MainStack = ({ route, navigation }) => {
           tabBarLabel: ({ focused, color }) => {
             let labelName;
 
-            if (route.name === "PickaSpot") {
+            if (route.name === "PickStack") {
               labelName = "Pick a Spot";
-            } else if (route.name === "ProvideaSpot") {
+            } else if (route.name === "ProvideStack") {
               labelName = "Provide a Spot";
             }
 
@@ -47,9 +51,9 @@ const MainStack = ({ route, navigation }) => {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
-            if (route.name === "PickaSpot") {
+            if (route.name === "PickStack") {
               iconName = focused ? "car-sport" : "car-sport-outline";
-            } else if (route.name === "ProvideaSpot") {
+            } else if (route.name === "ProvideStack") {
               iconName = focused ? "location" : "location-outline";
             }
 
@@ -66,13 +70,13 @@ const MainStack = ({ route, navigation }) => {
         })}
       >
         <Tab.Screen
-          name="PickaSpot"
-          component={PickaSpot}
+          name="PickStack"
+          component={PickStack}
           initialParams={{ user, userEmail }}
         />
         <Tab.Screen
-          name="ProvideaSpot"
-          component={ProvideaSpot}
+          name="ProvideStack"
+          component={ProvideStack}
           initialParams={{ user, userEmail }}
         />
       </Tab.Navigator>

@@ -11,10 +11,12 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import "react-native-gesture-handler";
-import styles from "./styles";
+import styles from "../shared/styles";
 import SelectDropdown from "react-native-select-dropdown";
 import auth from "@react-native-firebase/auth";
-import "react-native-gesture-handler";
+import formstyles from "../shared/formstyles";
+import { db, colRef } from "../shared/firebase";
+import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
 
 const { height, width } = Dimensions.get("window");
 
@@ -24,8 +26,9 @@ const GetDetails = ({ route, navigation }) => {
   const [address, setaddress] = useState("");
   const [phone, setphone] = useState("");
   const [nic, setnic] = useState("");
+  const [gender, setgender] = useState("");
 
-  const [errorText, setErrortext] = useState("");
+  const [ErrorText, setErrortext] = useState("");
   const [errortext, seterrortext] = useState({
     fName: "",
     lName: "",
@@ -94,6 +97,7 @@ const GetDetails = ({ route, navigation }) => {
       .then((userCredentials) => {
         const user = userCredentials.user;
         console.log(user.email);
+        setErrortext("");
       })
       .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
@@ -113,10 +117,36 @@ const GetDetails = ({ route, navigation }) => {
     handleErrors();
     if (Object.values(errortext).every((value) => value === "")) {
       handleAuth();
+    } else {
+      alert("Please fill the form correctly");
+    }
+
+    if (ErrorText === "") {
+      addDoc(colRef, {
+        email: userEmail,
+        firstName: fName,
+        lastName: lName,
+        gender: gender,
+        phone: phone,
+        NIC: nic,
+        address: address,
+      })
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+          navigation.navigate("MainStack", {
+            userEmail: userEmail,
+          });
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
+    } else {
+      alert("Please check your email and password");
     }
   };
 
   const loremIpsumText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dignissim, purus non euismod varius, purus odio ultrices felis, id consectetur massa turpis nec velit. Praesent tincidunt velit eu mauris aliquam, id sollicitudin dolor feugiat. Curabitur sodales convallis scelerisque. Nam venenatis sem eu velit pellentesque, in iaculis urna rhoncus. Ut suscipit semper nulla, sed laoreet nisi elementum nec. Donec semper, mauris at ultricies efficitur, urna lorem tincidunt nulla, ac consectetur arcu mauris a tellus. Aliquam sed leo ac lacus fringilla varius nec eget felis. Sed sed erat eu massa tempus malesuada. Quisque facilisis fermentum fringilla. Etiam sed elit sed nunc vulputate elementum. Aliquam erat volutpat. Vivamus malesuada convallis neque, vitae pharetra purus tempus nec.`;
+
   return (
     <View
       style={[
@@ -168,6 +198,7 @@ const GetDetails = ({ route, navigation }) => {
               data={genders}
               onSelect={(selectedItem, index) => {
                 console.log(selectedItem, index);
+                setgender(selectedItem);
               }}
               defaultButtonText="Gender"
               buttonStyle={formstyles.textInput}
@@ -224,9 +255,9 @@ const GetDetails = ({ route, navigation }) => {
                 SUBMIT
               </Text>
             </TouchableOpacity>
-            <Text style={[styles.text, { fontSize: 25 }]}>
+            {/* <Text style={[styles.text, { fontSize: 25 }]}>
               {loremIpsumText}
-            </Text>
+            </Text> */}
           </ScrollView>
         </KeyboardAvoidingView>
       </View>
@@ -235,59 +266,3 @@ const GetDetails = ({ route, navigation }) => {
 };
 
 export default GetDetails;
-
-const formstyles = StyleSheet.create({
-  scrollViewContainer: {
-    width: width - 30,
-    borderRadius: 30,
-    backgroundColor: "rgba(255, 255, 255, 0.3)",
-    zIndex: 1,
-    top: 40,
-    paddingTop: 20,
-    height: height - 80,
-    position: "absolute",
-  },
-  textInput: {
-    height: 60,
-    width: width - 60,
-    borderRadius: 10,
-    backgroundColor: "white",
-    marginVertical: 10,
-    paddingLeft: 20,
-    elevation: 2,
-    alignSelf: "center",
-  },
-  backImage: {
-    width: width,
-    height: height,
-  },
-  pageTitle: {
-    fontSize: 30,
-    color: "#273180",
-    fontWeight: "bold",
-    textAlign: "center",
-    fontFamily: "Raleway",
-    margin: 10,
-    textShadowColor: "rgba(0, 0, 0, 0.25)",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 5,
-  },
-  buttonText: {
-    fontSize: 15,
-    color: "#676767",
-    fontFamily: "Raleway",
-    textAlign: "left",
-  },
-  rowStyle: {
-    height: 50,
-    width: width - 60,
-    backgroundColor: "white",
-    paddingLeft: 10,
-  },
-  dropdownStyle: {
-    height: 100,
-    width: width - 60,
-    borderRadius: 10,
-    backgroundColor: "white",
-  },
-});

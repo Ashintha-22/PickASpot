@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import styles from "./styles";
+import styles from "../shared/styles";
 import auth from "@react-native-firebase/auth";
 import "react-native-gesture-handler";
 

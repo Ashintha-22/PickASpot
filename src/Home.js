@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
-import styles from "./styles";
+import styles from "../shared/styles";
 import "react-native-gesture-handler";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
