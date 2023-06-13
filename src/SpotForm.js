@@ -23,13 +23,14 @@ const SpotForm = ({ route, navigation }) => {
   const [spotName, setspotName] = useState("");
   const [location, setlocation] = useState("");
   const [noOfSlots, setNoOfSlots] = useState("");
-  const [phone, setphone] = useState("");
+  const [price, setprice] = useState("");
   const [nic, setnic] = useState("");
 
   const [errortext, seterrortext] = useState({
     spotName: "",
     location: "",
     noOfSlots: "",
+    price: "",
   });
 
   const loremIpsumText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dignissim, purus non euismod varius, purus odio ultrices felis, id consectetur massa turpis nec velit. Praesent tincidunt velit eu mauris aliquam, id sollicitudin dolor feugiat. Curabitur sodales convallis scelerisque. Nam venenatis sem eu velit pellentesque, in iaculis urna rhoncus. Ut suscipit semper nulla, sed laoreet nisi elementum nec. Donec semper, mauris at ultricies efficitur, urna lorem tincidunt nulla, ac consectetur arcu mauris a tellus. Aliquam sed leo ac lacus fringilla varius nec eget felis. Sed sed erat eu massa tempus malesuada. Quisque facilisis fermentum fringilla. Etiam sed elit sed nunc vulputate elementum. Aliquam erat volutpat. Vivamus malesuada convallis neque, vitae pharetra purus tempus nec.`;
@@ -90,6 +91,16 @@ const SpotForm = ({ route, navigation }) => {
             />
             {errortext.location !== "" && (
               <Text style={styles.errorText}>{errortext.location}</Text>
+            )}
+            <TextInput
+              placeholder="Price per hour"
+              value={price}
+              onChangeText={(text) => setprice(text)}
+              placeholderTextColor="#676767"
+              style={formstyles.textInput}
+            />
+            {errortext.price !== "" && (
+              <Text style={styles.errorText}>{errortext.price}</Text>
             )}
             {/* <SelectDropdown
               data={genders}

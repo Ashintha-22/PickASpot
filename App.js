@@ -10,7 +10,7 @@ import MainStack from "./src/MainStack";
 import Header from "./shared/header";
 import GetDetails from "./src/GetDetails";
 import SpotForm from "./src/SpotForm";
-import { initializeApp } from "firebase/app";
+import Map from "./src/Map";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { db, colRef } from "./shared/firebase";
 
@@ -38,6 +38,7 @@ const App = () => {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Map" component={Map} />
         <Stack.Screen name="GetDetails" component={GetDetails} />
         <Stack.Screen
           name="MainStack"

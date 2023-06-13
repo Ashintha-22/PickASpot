@@ -2,7 +2,7 @@
   "expo": {
     "name": "PickASpot",
     "slug": "PickASpot",
-    "plugins": ["@react-native-google-signin/google-signin"],
+    //"plugins": ["@react-native-google-signin/google-signin"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/SquareLogo.png",
@@ -23,7 +23,12 @@
         "foregroundImage": "./assets/SquareLogo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dev_ashintha.PickASpot"
+      "package": "com.dev_ashintha.PickASpot",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyD0Rb3qgHiHtnXboBoDIksizKET2kNz8W4"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -33,7 +33,6 @@ const formstyles = StyleSheet.create({
     color: "#273180",
     fontWeight: "bold",
     textAlign: "center",
-    fontFamily: "Raleway",
     margin: 10,
     textShadowColor: "rgba(0, 0, 0, 0.25)",
     textShadowOffset: { width: 1, height: 1 },
@@ -42,7 +41,6 @@ const formstyles = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     color: "#676767",
-    fontFamily: "Raleway",
     textAlign: "left",
   },
   rowStyle: {

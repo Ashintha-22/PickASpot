@@ -7,10 +7,8 @@ import {
   Button,
 } from "react-native";
 import React, { useEffect } from "react";
-import { useRoute } from "@react-navigation/native";
 import styles from "../shared/styles";
 import "react-native-gesture-handler";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
 
 const { height, width } = Dimensions.get("window");
@@ -19,7 +17,7 @@ const Home = ({ route, navigation }) => {
   const { user, userEmail } = route.params || {}; // Add a null check here;
 
   const signOut = async () => {
-    navigation.navigate("GetDetails");
+    navigation.navigate("Map");
     // auth()
     //   .signOut()
     //   .then(() => console.log("User signed out!"));
@@ -90,7 +88,7 @@ const Home = ({ route, navigation }) => {
         >
           <Text style={[styles.buttonText, { color: "white" }]}>REGISTER</Text>
         </TouchableOpacity>
-        {/* <Button style={{ marginTop: 0 }} title="Sign Out" onPress={signOut} /> */}
+        {<Button style={{ marginTop: 0 }} title="Sign Out" onPress={signOut} />}
       </View>
     </View>
   );

@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
     top: 20,
-    fontFamily: "Raleway",
     margin: 10,
   },
   forgotPassword: {
@@ -57,7 +56,6 @@ const styles = StyleSheet.create({
     color: "#5C8AFF",
     alignSelf: "flex-end",
     textAlign: "right",
-    fontFamily: "Raleway",
     marginTop: 5,
     marginRight: 32,
   },
@@ -83,7 +81,6 @@ const styles = StyleSheet.create({
     color: "#676767",
     fontWeight: "bold",
     textAlign: "center",
-    fontFamily: "Raleway",
     alignSelf: "center",
     //marginLeft: 20,
   },

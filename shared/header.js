@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import "react-native-gesture-handler";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
 
 const { height, width } = Dimensions.get("window");
@@ -14,13 +13,13 @@ const signOut = async () => {
       console.log("User signed out!");
     });
 
-  try {
-    await GoogleSignin.revokeAccess();
-    await auth().signOut();
-    navigation.navigate("MainStack");
-  } catch (error) {
-    //console.log(error);
-  }
+  // try {
+  //   await GoogleSignin.revokeAccess();
+  //   await auth().signOut();
+  //   navigation.navigate("MainStack");
+  // } catch (error) {
+  //   //console.log(error);
+  // }
 };
 
 const Header = () => {

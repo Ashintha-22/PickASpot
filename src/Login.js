@@ -7,7 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+//import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
 import React, { useState, useEffect } from "react";
 import styles from "../shared/styles";
@@ -82,63 +82,63 @@ const Login = ({ route, navigation }) => {
     return unsubscribe;
   }, []);
 
-  GoogleSignin.configure({
-    webClientId:
-      "1017882151115-u2ki65sbjmr6db53cej5mvcad9mh4qro.apps.googleusercontent.com",
-  });
+  // GoogleSignin.configure({
+  //   webClientId:
+  //     "1017882151115-u2ki65sbjmr6db53cej5mvcad9mh4qro.apps.googleusercontent.com",
+  // });
 
-  // Handle user state changes
-  function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
+  // // Handle user state changes
+  // function onAuthStateChanged(user) {
+  //   setUser(user);
+  //   if (initializing) setInitializing(false);
+  // }
 
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+  // useEffect(() => {
+  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+  //   return subscriber; // unsubscribe on unmount
+  // }, []);
 
-  const onGoogleButtonPress = async () => {
-    // Check if your device supports Google Play
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn();
+  // const onGoogleButtonPress = async () => {
+  //   // Check if your device supports Google Play
+  //   await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+  //   // Get the users ID token
+  //   const { idToken } = await GoogleSignin.signIn();
 
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  //   // Create a Google credential with the token
+  //   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-    // Sign-in the user with the credential
-    //const user_sign_in = auth().signInWithCredential(googleCredential);
+  //   // Sign-in the user with the credential
+  //   //const user_sign_in = auth().signInWithCredential(googleCredential);
 
-    auth()
-      .signInWithCredential(googleCredential)
-      .then(({ user }) => {
-        auth()
-          .fetchSignInMethodsForEmail(user.email)
-          .then((signInMethods) => {
-            if (signInMethods.length === 0) {
-              alert("If new user. Please Register");
-              navigation.navigate("Register", {
-                userEmail: user.email,
-              });
-            } else {
-              console.log(user.email);
-              user
-                .then((user) => {
-                  console.log(user);
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
-  };
+  //   auth()
+  //     .signInWithCredential(googleCredential)
+  //     .then(({ user }) => {
+  //       auth()
+  //         .fetchSignInMethodsForEmail(user.email)
+  //         .then((signInMethods) => {
+  //           if (signInMethods.length === 0) {
+  //             alert("If new user. Please Register");
+  //             navigation.navigate("Register", {
+  //               userEmail: user.email,
+  //             });
+  //           } else {
+  //             console.log(user.email);
+  //             user
+  //               .then((user) => {
+  //                 console.log(user);
+  //               })
+  //               .catch((error) => {
+  //                 console.log(error);
+  //               });
+  //           }
+  //         })
+  //         .catch((error) => {
+  //           console.log(error);
+  //         });
+  //     });
+  // };
 
-  if (initializing) return null;
+  // if (initializing) return null;
 
   if (!user) {
     return (
@@ -201,7 +201,7 @@ const Login = ({ route, navigation }) => {
             <TouchableOpacity
               style={styles.googleSignInButton}
               activeOpacity={0.5}
-              onPress={onGoogleButtonPress}
+              //onPress={onGoogleButtonPress}
             >
               <Image
                 source={require("../assets/google.png")}

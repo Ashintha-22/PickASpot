@@ -4,13 +4,10 @@ import auth from "@react-native-firebase/auth";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import PickaSpot from "./PickaSpot";
 import ProvideStack from "../stacks/ProvideStack";
 import PickStack from "../stacks/PickStack";
-import ProvideaSpot from "./ProvideaSpot";
-import SpotForm from "./SpotForm";
 
 const Tab = createBottomTabNavigator();
 

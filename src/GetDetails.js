@@ -27,6 +27,10 @@ const GetDetails = ({ route, navigation }) => {
   const [phone, setphone] = useState("");
   const [nic, setnic] = useState("");
   const [gender, setgender] = useState("");
+  const [spotName, setspotName] = useState("");
+  const [location, setlocation] = useState("");
+  const [noOfSlots, setNoOfSlots] = useState("");
+  const [price, setprice] = useState("");
 
   const [ErrorText, setErrortext] = useState("");
   const [errortext, seterrortext] = useState({
@@ -39,7 +43,7 @@ const GetDetails = ({ route, navigation }) => {
 
   const genders = ["Male", "Female"];
 
-  const { userEmail, userPassword } = route.params || {}; // Add a null check here;
+  const { userEmail, userPassword, firstName } = route.params || {}; // Add a null check here;
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((user) => {
@@ -60,6 +64,10 @@ const GetDetails = ({ route, navigation }) => {
     errortext.address = "";
     errortext.phone = "";
     errortext.nic = "";
+    errortext.spotName = "";
+    errortext.location = "";
+    errortext.noOfSlots = "";
+    errortext.price = "";
 
     if (fName.trim() === "") {
       newErrorText = { ...newErrorText, fName: "Please enter your first name" };
@@ -86,6 +94,18 @@ const GetDetails = ({ route, navigation }) => {
     }
     if (address.trim() === "") {
       newErrorText = { ...newErrorText, address: "Please enter your address" };
+    }
+    if (spotName.trim() === "") {
+      newErrorText = { ...newErrorText, spotName: "Please enter spot name" };
+    }
+    if (location.trim() === "") {
+      newErrorText = { ...newErrorText, location: "Please enter location" };
+    }
+    if (noOfSlots.trim() === "") {
+      newErrorText = { ...newErrorText, noOfSlots: "Please enter no of slots" };
+    }
+    if (price.trim() === "") {
+      newErrorText = { ...newErrorText, price: "Please enter price" };
     }
 
     seterrortext({ ...errortext, ...newErrorText }); // Merge the new error messages with the existing state object
@@ -116,6 +136,7 @@ const GetDetails = ({ route, navigation }) => {
   const handleSubmit = () => {
     handleErrors();
     if (Object.values(errortext).every((value) => value === "")) {
+      firstName = fName;
       handleAuth();
     } else {
       alert("Please fill the form correctly");
@@ -130,6 +151,9 @@ const GetDetails = ({ route, navigation }) => {
         phone: phone,
         NIC: nic,
         address: address,
+        spotName: spotName,
+        location: location,
+        noOfSlots: noOfSlots,
       })
         .then((docRef) => {
           console.log("Document written with ID: ", docRef.id);
@@ -245,9 +269,66 @@ const GetDetails = ({ route, navigation }) => {
             {errortext.address !== "" && (
               <Text style={styles.errorText}>{errortext.address}</Text>
             )}
+            <Text style={formstyles.pageTitle}>Spot Details!</Text>
+            <TextInput
+              placeholder="Spot Name"
+              value={spotName}
+              onChangeText={(text) => setspotName(text)}
+              placeholderTextColor="#676767"
+              style={[formstyles.textInput, { marginTop: 20 }]}
+            />
+            {errortext.spotName !== "" && (
+              <Text style={styles.errorText}>{errortext.spotName}</Text>
+            )}
+            <TextInput
+              placeholder="No of Slots"
+              value={noOfSlots}
+              keyboardType="numeric"
+              onChangeText={(text) => setNoOfSlots(text)}
+              placeholderTextColor="#676767"
+              style={formstyles.textInput}
+            />
+            {errortext.noOfSlots !== "" && (
+              <Text style={styles.errorText}>{errortext.noOfSlots}</Text>
+            )}
+            <TextInput
+              placeholder="Location"
+              value={location}
+              onChangeText={(text) => setlocation(text)}
+              placeholderTextColor="#676767"
+              style={formstyles.textInput}
+            />
+            {errortext.location !== "" && (
+              <Text style={styles.errorText}>{errortext.location}</Text>
+            )}
+            <TouchableOpacity
+              style={[
+                styles.LoginRegisterButton,
+                { marginTop: 20, marginBottom: 20 },
+              ]}
+              activeOpacity={0.5}
+              onPress={handleSubmit}
+            >
+              <Text style={[styles.buttonText, { color: "white" }]}>
+                ADD LOCATION
+              </Text>
+            </TouchableOpacity>
+            <TextInput
+              placeholder="Price per hour"
+              value={price}
+              onChangeText={(text) => setprice(text)}
+              placeholderTextColor="#676767"
+              style={formstyles.textInput}
+            />
+            {errortext.price !== "" && (
+              <Text style={styles.errorText}>{errortext.price}</Text>
+            )}
 
             <TouchableOpacity
-              style={[styles.LoginRegisterButton, { marginTop: 20 }]}
+              style={[
+                styles.LoginRegisterButton,
+                { marginTop: 20, marginBottom: 20 },
+              ]}
               activeOpacity={0.5}
               onPress={handleSubmit}
             >
@@ -266,3 +347,19 @@ const GetDetails = ({ route, navigation }) => {
 };
 
 export default GetDetails;
+
+const newStyle = StyleSheet.create({
+  locationButton: {
+    height: 30,
+    width: width - 60,
+    borderRadius: 150,
+    alignSelf: "center",
+    justifyContent: "center",
+    backgroundColor: "#BE1D1D",
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+  },
+});

@@ -1,5 +1,6 @@
 import firebase from "@react-native-firebase/app";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
+import "expo-dev-client";
 
 //init  services
 const db = getFirestore();
