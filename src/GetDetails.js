@@ -16,7 +16,13 @@ import SelectDropdown from "react-native-select-dropdown";
 import auth from "@react-native-firebase/auth";
 import formstyles from "../shared/formstyles";
 import { db, colRef } from "../shared/firebase";
-import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  GeoPoint,
+} from "firebase/firestore";
 
 const { height, width } = Dimensions.get("window");
 
@@ -28,7 +34,8 @@ const GetDetails = ({ route, navigation }) => {
   const [nic, setnic] = useState("");
   const [gender, setgender] = useState("");
   const [spotName, setspotName] = useState("");
-  const [location, setlocation] = useState("");
+  const [latitude, setlatitude] = useState("");
+  const [longitude, setlongitude] = useState("");
   const [noOfSlots, setNoOfSlots] = useState("");
   const [price, setprice] = useState("");
 
@@ -39,11 +46,16 @@ const GetDetails = ({ route, navigation }) => {
     address: "",
     phone: "",
     nic: "",
+    spotName: "",
+    latitude: "",
+    longitude: "",
+    noOfSlots: "",
+    price: "",
   });
 
   const genders = ["Male", "Female"];
 
-  const { userEmail, userPassword, firstName } = route.params || {}; // Add a null check here;
+  const { userEmail, userPassword } = route.params || {}; // Add a null check here;
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((user) => {
@@ -65,7 +77,8 @@ const GetDetails = ({ route, navigation }) => {
     errortext.phone = "";
     errortext.nic = "";
     errortext.spotName = "";
-    errortext.location = "";
+    errortext.latitude = "";
+    errortext.longitude = "";
     errortext.noOfSlots = "";
     errortext.price = "";
 
@@ -98,8 +111,11 @@ const GetDetails = ({ route, navigation }) => {
     if (spotName.trim() === "") {
       newErrorText = { ...newErrorText, spotName: "Please enter spot name" };
     }
-    if (location.trim() === "") {
-      newErrorText = { ...newErrorText, location: "Please enter location" };
+    if (latitude.trim() === "") {
+      newErrorText = { ...newErrorText, location: "Please enter latitude" };
+    }
+    if (longitude.trim() === "") {
+      newErrorText = { ...newErrorText, location: "Please enter longitude" };
     }
     if (noOfSlots.trim() === "") {
       newErrorText = { ...newErrorText, noOfSlots: "Please enter no of slots" };
@@ -134,9 +150,10 @@ const GetDetails = ({ route, navigation }) => {
   };
 
   const handleSubmit = () => {
+    const locationSpot = new GeoPoint(latitude, longitude);
+
     handleErrors();
     if (Object.values(errortext).every((value) => value === "")) {
-      firstName = fName;
       handleAuth();
     } else {
       alert("Please fill the form correctly");
@@ -152,13 +169,16 @@ const GetDetails = ({ route, navigation }) => {
         NIC: nic,
         address: address,
         spotName: spotName,
-        location: location,
+        location: locationSpot,
         noOfSlots: noOfSlots,
+        price: price,
+        availableSlots: noOfSlots,
       })
         .then((docRef) => {
           console.log("Document written with ID: ", docRef.id);
           navigation.navigate("MainStack", {
             userEmail: userEmail,
+            firstName: fName,
           });
         })
         .catch((error) => {
@@ -292,14 +312,24 @@ const GetDetails = ({ route, navigation }) => {
               <Text style={styles.errorText}>{errortext.noOfSlots}</Text>
             )}
             <TextInput
-              placeholder="Location"
-              value={location}
-              onChangeText={(text) => setlocation(text)}
+              placeholder="Latitude"
+              value={latitude}
+              onChangeText={(text) => setlatitude(text)}
               placeholderTextColor="#676767"
               style={formstyles.textInput}
             />
-            {errortext.location !== "" && (
-              <Text style={styles.errorText}>{errortext.location}</Text>
+            {errortext.latitude !== "" && (
+              <Text style={styles.errorText}>{errortext.latitude}</Text>
+            )}
+            <TextInput
+              placeholder="Longitude"
+              value={longitude}
+              onChangeText={(text) => setlongitude(text)}
+              placeholderTextColor="#676767"
+              style={formstyles.textInput}
+            />
+            {errortext.longitude !== "" && (
+              <Text style={styles.errorText}>{errortext.longitude}</Text>
             )}
             <TouchableOpacity
               style={[
@@ -317,6 +347,7 @@ const GetDetails = ({ route, navigation }) => {
               placeholder="Price per hour"
               value={price}
               onChangeText={(text) => setprice(text)}
+              keyboardType="numeric"
               placeholderTextColor="#676767"
               style={formstyles.textInput}
             />
@@ -336,9 +367,6 @@ const GetDetails = ({ route, navigation }) => {
                 SUBMIT
               </Text>
             </TouchableOpacity>
-            {/* <Text style={[styles.text, { fontSize: 25 }]}>
-              {loremIpsumText}
-            </Text> */}
           </ScrollView>
         </KeyboardAvoidingView>
       </View>

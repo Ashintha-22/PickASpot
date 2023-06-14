@@ -11,7 +11,13 @@ import Header from "./shared/header";
 import GetDetails from "./src/GetDetails";
 import SpotForm from "./src/SpotForm";
 import Map from "./src/Map";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db, colRef } from "./shared/firebase";
 
 // initializeApp({ projectId: "pick-a-spot-mobile" });

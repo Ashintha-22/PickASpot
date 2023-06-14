@@ -9,21 +9,27 @@ import React from "react";
 
 const { height, width } = Dimensions.get("window");
 
-export default function Spot({ item, pressHandler }) {
+export default function Spot({ item, title }) {
   return (
-    <TouchableOpacity activeOpacity={0.5} onPress={() => pressHandler(item.id)}>
-      <Text style={styles.item}>{item.title}</Text>
+    <TouchableOpacity activeOpacity={0.5}>
+      <Text style={styles.item}>
+        {title} {item}
+      </Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   item: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 18,
+    fontSize: 18,
+    fontWeight: "bold",
     borderColor: "#DDDDDD",
     alignSelf: "center",
-    borderRadius: 3,
+    borderRadius: 10,
     width: width - 30,
+    lineHeight: 35,
     marginVertical: 5,
     backgroundColor: "white",
     flexDirection: "row",

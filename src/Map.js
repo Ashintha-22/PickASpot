@@ -7,7 +7,6 @@ import MapView, {
 } from "react-native-maps";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import * as Location from "expo-location";
 import MapViewDirections from "react-native-maps-directions";
 
 const Map = () => {
@@ -45,7 +44,7 @@ const Map = () => {
   }, []);
 
   return (
-    <View style={{ marginTop: 50, flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <GooglePlacesAutocomplete
         placeholder="Search"
         fetchDetails={true}

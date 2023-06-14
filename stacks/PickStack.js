@@ -9,6 +9,8 @@ const Stack = createNativeStackNavigator();
 const PickStack = ({ route, navigation }) => {
   const { user, userEmail } = route.params;
 
+  console.log("PickStack userEmail: ", userEmail);
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen

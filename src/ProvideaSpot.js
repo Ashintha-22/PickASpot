@@ -36,9 +36,7 @@ const ProvideaSpot = ({ navigation }) => {
         //numColumns={2}
         keyExtractor={(item) => item.id}
         data={spot}
-        renderItem={({ item }) => (
-          <Spot item={item} pressHandler={pressHandler} />
-        )}
+        renderItem={({ item }) => <Spot item={item.title} />}
       />
       <View>
         <TouchableOpacity

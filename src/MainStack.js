@@ -13,6 +13,7 @@ const Tab = createBottomTabNavigator();
 
 const MainStack = ({ route, navigation }) => {
   const { user, userEmail } = route.params;
+  console.log("MainStack userEmail: ", userEmail);
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((user) => {
