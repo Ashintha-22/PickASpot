@@ -12,7 +12,7 @@ import PickStack from "../stacks/PickStack";
 const Tab = createBottomTabNavigator();
 
 const MainStack = ({ route, navigation }) => {
-  const { user, userEmail } = route.params;
+  const { user, userEmail, firstName } = route.params;
   console.log("MainStack userEmail: ", userEmail);
 
   useEffect(() => {
@@ -70,12 +70,12 @@ const MainStack = ({ route, navigation }) => {
         <Tab.Screen
           name="PickStack"
           component={PickStack}
-          initialParams={{ user, userEmail }}
+          initialParams={{ user, userEmail, firstName }}
         />
         <Tab.Screen
           name="ProvideStack"
           component={ProvideStack}
-          initialParams={{ user, userEmail }}
+          initialParams={{ user, userEmail, firstName }}
         />
       </Tab.Navigator>
     </NavigationContainer>

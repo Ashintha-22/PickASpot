@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Dimensions,
   FlatList,
+  Button,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import styles from "../shared/styles";
@@ -20,6 +21,8 @@ import {
   query,
   where,
   onSnapshot,
+  setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db, colRef } from "../shared/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -52,10 +55,44 @@ const SpotDetails = ({ route, navigation }) => {
     });
   }, []);
 
-  console.log("Array: ", userData);
-  console.log("Email: ", userData.email);
-  const Price = userData.price;
-  console.log("Price: ", Price);
+  const onBook = () => {
+    const slotquery = query(colRef, where("email", "==", userEmail));
+    // realtime collection data
+    onSnapshot(slotquery, (snapshot) => {
+      let users = [];
+      snapshot.docs.forEach((doc) => {
+        users.push({ ...doc.data(), id: doc.id });
+      });
+      setuserData(users);
+      console.log("AGAIN: ", users);
+
+      // Get the first user from the users array
+      const user = users[0];
+      console.log("user: ", user.email);
+      if (user) {
+        // Access the noOfSlots field from the user object
+        if (user.availableSlots > 0) {
+          setDoc(
+            slotquery,
+            {
+              availableSlots: user.availableSlots - 1,
+            },
+            { merge: true }
+          )
+            .then(() => {
+              console.log("Document updated successfully");
+            })
+            .catch((error) => {
+              console.log("Error updating document: ", error);
+            });
+        } else {
+          alert("No available slots");
+        }
+
+        console.log("availableSlots: ", user.availableSlots);
+      }
+    });
+  };
 
   return (
     <View
@@ -84,6 +121,40 @@ const SpotDetails = ({ route, navigation }) => {
               <Spot item={user.email} title={"Email:"} />
             </View>
           ))}
+          <View
+            style={{
+              flexDirection: "row",
+              flex: 1,
+              justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={[
+                newStyle.locationButton,
+                {
+                  marginHorizontal: 30,
+                  marginVertical: 20,
+                  backgroundColor: "#33DB15",
+                },
+              ]}
+              activeOpacity={0.8}
+              //onPress={onBook}
+            >
+              <Text style={[styles.buttonText, { color: "white" }]}>BOOK</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                newStyle.locationButton,
+                { marginHorizontal: 30, marginVertical: 20 },
+              ]}
+              activeOpacity={0.8}
+              //onPress={handleSubmit}
+            >
+              <Text style={[styles.buttonText, { color: "white" }]}>
+                CANCEL
+              </Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </View>
@@ -102,5 +173,21 @@ const spotstyles = StyleSheet.create({
   },
   cardContainer: {
     marginTop: -height + 240,
+  },
+});
+
+const newStyle = StyleSheet.create({
+  locationButton: {
+    height: 50,
+    width: 100,
+    borderRadius: 150,
+    alignSelf: "center",
+    justifyContent: "center",
+    backgroundColor: "#BE1D1D",
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
   },
 });

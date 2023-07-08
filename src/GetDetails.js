@@ -23,10 +23,14 @@ import {
   addDoc,
   GeoPoint,
 } from "firebase/firestore";
+import { getDatabase, set, get, ref } from "firebase/database";
 
 const { height, width } = Dimensions.get("window");
 
 const GetDetails = ({ route, navigation }) => {
+  const { userEmail, userPassword, latitude, longitude } = route.params || {}; // Add a null check here
+  console.log("getdetails location: ", latitude, longitude);
+
   const [fName, setfName] = useState("");
   const [lName, setlName] = useState("");
   const [address, setaddress] = useState("");
@@ -34,11 +38,10 @@ const GetDetails = ({ route, navigation }) => {
   const [nic, setnic] = useState("");
   const [gender, setgender] = useState("");
   const [spotName, setspotName] = useState("");
-  const [latitude, setlatitude] = useState("");
-  const [longitude, setlongitude] = useState("");
+  // const [latitude, setlatitude] = useState("");
+  // const [longitude, setlongitude] = useState("");
   const [noOfSlots, setNoOfSlots] = useState("");
   const [price, setprice] = useState("");
-
   const [ErrorText, setErrortext] = useState("");
   const [errortext, seterrortext] = useState({
     fName: "",
@@ -53,15 +56,16 @@ const GetDetails = ({ route, navigation }) => {
     price: "",
   });
 
-  const genders = ["Male", "Female"];
+  const db = getDatabase();
 
-  const { userEmail, userPassword } = route.params || {}; // Add a null check here;
+  const genders = ["Male", "Female"];
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((user) => {
       if (user) {
         navigation.navigate("MainStack", {
           userEmail: user.email,
+          firstName: fName,
         });
       }
     });
@@ -111,12 +115,12 @@ const GetDetails = ({ route, navigation }) => {
     if (spotName.trim() === "") {
       newErrorText = { ...newErrorText, spotName: "Please enter spot name" };
     }
-    if (latitude.trim() === "") {
-      newErrorText = { ...newErrorText, location: "Please enter latitude" };
-    }
-    if (longitude.trim() === "") {
-      newErrorText = { ...newErrorText, location: "Please enter longitude" };
-    }
+    // if (latitude.trim() === "") {
+    //   newErrorText = { ...newErrorText, location: "Please enter latitude" };
+    // }
+    // if (longitude.trim() === "") {
+    //   newErrorText = { ...newErrorText, location: "Please enter longitude" };
+    // }
     if (noOfSlots.trim() === "") {
       newErrorText = { ...newErrorText, noOfSlots: "Please enter no of slots" };
     }
@@ -155,6 +159,33 @@ const GetDetails = ({ route, navigation }) => {
     handleErrors();
     if (Object.values(errortext).every((value) => value === "")) {
       handleAuth();
+
+      const data = {
+        username: fName,
+        lat: Number(latitude),
+        longt: Number(longitude),
+        total: Number(noOfSlots),
+        available: Number(noOfSlots),
+        rate: Number(price),
+        phone: Number(phone),
+        email: userEmail,
+      };
+
+      set(ref(db, "Location/" + data.username), {
+        latitude: data.lat,
+        longtitude: data.longt,
+        total: data.total,
+        available: data.available,
+        rate: data.rate,
+        phone: data.phone,
+        email: data.email,
+      })
+        .then(() => {
+          alert("Data added successfully");
+        })
+        .catch((error) => {
+          alert("Error occurred, details: " + error);
+        });
     } else {
       alert("Please fill the form correctly");
     }
@@ -312,32 +343,31 @@ const GetDetails = ({ route, navigation }) => {
               <Text style={styles.errorText}>{errortext.noOfSlots}</Text>
             )}
             <TextInput
-              placeholder="Latitude"
-              value={latitude}
-              onChangeText={(text) => setlatitude(text)}
+              placeholder={latitude ? String(latitude) : "Latitude"}
+              value={String(latitude)}
               placeholderTextColor="#676767"
               style={formstyles.textInput}
+              editable={false}
             />
-            {errortext.latitude !== "" && (
-              <Text style={styles.errorText}>{errortext.latitude}</Text>
-            )}
             <TextInput
-              placeholder="Longitude"
-              value={longitude}
-              onChangeText={(text) => setlongitude(text)}
+              placeholder={String(longitude) ? String(longitude) : "Longitude"}
+              value={String(longitude)}
               placeholderTextColor="#676767"
               style={formstyles.textInput}
+              editable={false}
             />
-            {errortext.longitude !== "" && (
-              <Text style={styles.errorText}>{errortext.longitude}</Text>
-            )}
             <TouchableOpacity
               style={[
-                styles.LoginRegisterButton,
+                newStyle.locationButton,
                 { marginTop: 20, marginBottom: 20 },
               ]}
               activeOpacity={0.5}
-              onPress={handleSubmit}
+              onPress={() =>
+                navigation.navigate("RegisterMap", {
+                  userEmail: userEmail,
+                  userPassword: userPassword,
+                })
+              }
             >
               <Text style={[styles.buttonText, { color: "white" }]}>
                 ADD LOCATION
@@ -378,7 +408,7 @@ export default GetDetails;
 
 const newStyle = StyleSheet.create({
   locationButton: {
-    height: 30,
+    height: 40,
     width: width - 60,
     borderRadius: 150,
     alignSelf: "center",

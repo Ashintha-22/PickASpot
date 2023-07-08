@@ -11,6 +11,7 @@ import Header from "./shared/header";
 import GetDetails from "./src/GetDetails";
 import SpotForm from "./src/SpotForm";
 import Map from "./src/Map";
+import RegisterMap from "./src/RegisterMap";
 import {
   getFirestore,
   collection,
@@ -20,7 +21,6 @@ import {
 } from "firebase/firestore";
 import { db, colRef } from "./shared/firebase";
 
-// initializeApp({ projectId: "pick-a-spot-mobile" });
 // //init  services
 // const db = getFirestore();
 
@@ -28,9 +28,9 @@ import { db, colRef } from "./shared/firebase";
 // const colRef = collection(db, "users");
 
 //get collection data
-getDocs(colRef).then((snapshot) => {
-  console.log(snapshot.docs);
-});
+// getDocs(colRef).then((snapshot) => {
+//   console.log(snapshot.docs);
+// });
 
 const Stack = createNativeStackNavigator();
 
@@ -44,7 +44,7 @@ const App = () => {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Map" component={Map} />
+        <Stack.Screen name="RegisterMap" component={RegisterMap} />
         <Stack.Screen name="GetDetails" component={GetDetails} />
         <Stack.Screen
           name="MainStack"
@@ -55,7 +55,6 @@ const App = () => {
             headerTitle: () => <Header />,
           }}
         />
-        <Stack.Screen name="SpotForm" component={SpotForm} />
       </Stack.Navigator>
     </NavigationContainer>
   );
